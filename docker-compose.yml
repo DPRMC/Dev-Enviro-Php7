@@ -1,0 +1,36 @@
+version: '2'
+
+volumes:
+  database_data:
+    driver: local
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    volumes:
+      - $NGINX_CONF:/etc/nginx/conf.d/default.conf
+      - $NGINX_ACCESS_LOG:/var/log/nginx/access.log
+      - $NGINX_ERROR_LOG:/var/log/nginx/error.log
+    volumes_from:
+      - php
+  php:
+    build: $PHP_BUILD
+    expose:
+      - 9000
+    volumes:
+      - $PHP_VOL:/var/www/application
+      - $PHP_INI:/usr/local/etc/php/php.ini
+  mysql:
+    image: mysql:latest
+    command: --sql_mode="" --secure_file_priv="NULL" --innodb_strict_mode="0" --collation_server="utf8_unicode_ci" --character_set_server="utf8"  --default_authentication_plugin="mysql_native_password"
+    ports:
+      - 3306:3306
+    volumes:
+      - $MYSQL_VOL:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PW
+      MYSQL_DATABASE: $MYSQL_DB
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PW
