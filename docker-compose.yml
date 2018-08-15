@@ -6,7 +6,9 @@ volumes:
 
 services:
   nginx:
-    image: nginx:latest
+    build:
+      context: $NGINX_BUILD
+      dockerfile: Dockerfile
     ports:
       - 8080:80
     volumes:
