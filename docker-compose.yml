@@ -26,7 +26,7 @@ services:
       - $PHP_INI:/usr/local/etc/php/php.ini
   mysql:
     image: mysql:latest
-    command: --sql_mode="" --secure_file_priv="NULL" --innodb_strict_mode="0" --collation_server="utf8_unicode_ci" --character_set_server="utf8"  --default_authentication_plugin="mysql_native_password"
+    command: --sql_mode="STRICT_ALL_TABLES" --secure_file_priv="NULL" --innodb_strict_mode="0" --collation_server="utf8_unicode_ci" --character_set_server="utf8"  --default_authentication_plugin="mysql_native_password"
     ports:
       - 3306:3306
     volumes:
